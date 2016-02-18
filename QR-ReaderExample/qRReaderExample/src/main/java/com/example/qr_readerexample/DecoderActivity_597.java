@@ -27,10 +27,13 @@ public class DecoderActivity_597 extends Activity implements OnQRCodeReadListene
     private TextView myTextView;
 	private QRCodeReaderView_597 mydecoderview;
 	private ImageView line_image;
+	int nameCount=1;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_decoder_597);
         
         mydecoderview = (QRCodeReaderView_597) findViewById(R.id.qrdecoderview_597);
@@ -59,15 +62,15 @@ public class DecoderActivity_597 extends Activity implements OnQRCodeReadListene
     // "points" : points where QR control points are placed
 	@Override
 	public void onQRCodeRead(String text, PointF[] points) {
+		String display=String.valueOf(nameCount);
 
-		myTextView.setText(text);
-
+		myTextView.setText(display);
+		display+=String.valueOf(nameCount);
 	//	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");//设置日期格式
 
-		String fileNameByDate =df.format(new Date())+".txt";// new Date()为获取当前系统时间
 
-		generateNoteOnSD(fileNameByDate, text);
+
+		generateNoteOnSD(text);
 
 
 	}
@@ -97,13 +100,19 @@ public class DecoderActivity_597 extends Activity implements OnQRCodeReadListene
 		mydecoderview.getCameraManager().stopPreview();
 	}
 
-	public void generateNoteOnSD(String sFileName, String sBody){
+	public void generateNoteOnSD(String sBody){
 		try
 		{
 			File root = new File(Environment.getExternalStorageDirectory(), "Notes");
 			if (!root.exists()) {
 				root.mkdirs();
 			}
+
+/*			SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss:ms");//设置日期格式
+			String sFileName =df.format(new Date())+".txt";// new Date()为获取当前系统时间*/
+
+			String sFileName=nameCount++ + ".txt";
+
 			File gpxfile = new File(root, sFileName);
 			FileWriter writer = new FileWriter(gpxfile);
 			writer.append(sBody);

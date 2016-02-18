@@ -53,7 +53,8 @@ import java.util.Arrays;
  * @author David L�zaro
  */
 public class QRCodeReaderView_597 extends SurfaceView implements SurfaceHolder.Callback,Camera.PreviewCallback {
-    private boolean flag=false;
+    private int flag=0;
+    private int UpLimit=100;
 
     public interface OnQRCodeReadListener_597 {
 
@@ -167,11 +168,11 @@ public class QRCodeReaderView_597 extends SurfaceView implements SurfaceHolder.C
 
                 //print input bitmap
 
-                if(flag==false){
+                if(flag<UpLimit){
 
                     String string= bitMatrixAfterDetection.toString();
                     mOnQRCodeReadListener.onQRCodeRead(string, transformedPoints);
-                    flag=true;
+                    flag++;
 
                 }
 
