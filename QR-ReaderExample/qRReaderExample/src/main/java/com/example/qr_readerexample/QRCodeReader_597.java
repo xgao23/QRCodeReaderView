@@ -1,6 +1,7 @@
 package com.example.qr_readerexample;
 
 
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -66,6 +67,7 @@ public class QRCodeReader_597 implements Reader {
         return result2;
     }
 
+// Xian added this mathod to check the bitMatrix
     public BitMatrix getResultAfterDectection_597(BinaryBitmap image) throws NotFoundException, FormatException {
         DetectorResult result = (new Detector(image.getBlackMatrix())).detect(null);
         BitMatrix bitMatrix=result.getBits();

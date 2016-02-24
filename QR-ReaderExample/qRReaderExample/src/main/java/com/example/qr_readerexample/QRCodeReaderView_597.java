@@ -54,7 +54,7 @@ import java.util.Arrays;
  */
 public class QRCodeReaderView_597 extends SurfaceView implements SurfaceHolder.Callback,Camera.PreviewCallback {
     private int flag=0;
-    private int UpLimit=100;
+    private int UpLimit=1;
 
     public interface OnQRCodeReadListener_597 {
 
@@ -115,7 +115,7 @@ public class QRCodeReaderView_597 extends SurfaceView implements SurfaceHolder.C
     public void surfaceCreated(SurfaceHolder holder) {
         try {
             // Indicate camera, our View dimensions
-            mCameraManager.openDriver(holder,this.getWidth(),this.getHeight());
+            mCameraManager.openDriver(holder, this.getWidth(), this.getHeight());
         } catch (IOException e) {
             Log.w(TAG, "Can not openDriver: "+e.getMessage());
             mCameraManager.closeDriver();
@@ -145,17 +145,22 @@ public class QRCodeReaderView_597 extends SurfaceView implements SurfaceHolder.C
 
         PlanarYUVLuminanceSource source = mCameraManager.buildLuminanceSource(data, mPreviewWidth, mPreviewHeight);
 
+
         HybridBinarizer hybBin = new HybridBinarizer(source);
         BinaryBitmap bitmap = new BinaryBitmap(hybBin);
 
         try {
-            Result result = mQRCodeReader.decode(bitmap);
+            //origin
+           // Result result = mQRCodeReader.decode(bitmap);
+
+
             BitMatrix bitMatrixAfterDetection=mQRCodeReader.getResultAfterDectection_597(bitmap);
 
             // Notify we found a QRCode
             if (mOnQRCodeReadListener != null) {
+                //origin
                 // Transform resultPoints to View coordinates
-                PointF[] transformedPoints = transformToViewCoordinates(result.getResultPoints());
+               // PointF[] transformedPoints = transformToViewCoordinates(result.getResultPoints());
 
                 //orignial
                // mOnQRCodeReadListener.onQRCodeRead(result.getText(), transformedPoints);
@@ -171,7 +176,7 @@ public class QRCodeReaderView_597 extends SurfaceView implements SurfaceHolder.C
                 if(flag<UpLimit){
 
                     String string= bitMatrixAfterDetection.toString();
-                    mOnQRCodeReadListener.onQRCodeRead(string, transformedPoints);
+                    mOnQRCodeReadListener.onQRCodeRead(string, null);
                     flag++;
 
                 }
@@ -180,11 +185,14 @@ public class QRCodeReaderView_597 extends SurfaceView implements SurfaceHolder.C
 
             }
 
-        } catch (ChecksumException e) {
+/*        } catch (ChecksumException e) {
             Log.d(TAG, "ChecksumException");
-            e.printStackTrace();
+            e.printStackTrace();*/
         } catch (NotFoundException e) {
             // Notify QR not found
+            Log.d(TAG,Integer.toString(mPreviewWidth)+"  "+Integer.toString(mPreviewHeight));
+            Log.d(TAG, "NotFoundException");
+            e.printStackTrace();
             if (mOnQRCodeReadListener != null) {
                 mOnQRCodeReadListener.QRCodeNotFoundOnCamImage();
             }
